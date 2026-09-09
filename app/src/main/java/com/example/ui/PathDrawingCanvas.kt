@@ -42,6 +42,7 @@ fun InteractiveAvoField(
     audioManager: AvoAudioManager,
     onBeanCollected: (beanId: Int) -> Unit,
     onClueFound: () -> Unit,
+    onAvoPositionChanged: (normX: Float, normY: Float) -> Unit = { _, _ -> },
     modifier: Modifier = Modifier
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -50,6 +51,8 @@ fun InteractiveAvoField(
     // Avo's physical state (in pixels)
     var avoX by remember { mutableFloatStateOf(-1f) }
     var avoY by remember { mutableFloatStateOf(-1f) }
+    var screenWidthPx by remember { mutableFloatStateOf(1080f) }
+    var screenHeightPx by remember { mutableFloatStateOf(1920f) }
     var avoHeading by remember { mutableFloatStateOf(90f) }
     var isAvoWalking by remember { mutableStateOf(false) }
     val bounceHop = remember { Animatable(0f) }
@@ -84,6 +87,11 @@ fun InteractiveAvoField(
                 } else {
                     avoX += (dx / dist) * speed
                     avoY += (dy / dist) * speed
+                }
+
+                // Notify normalized position for dynamic screen switching
+                if (screenWidthPx > 0f && screenHeightPx > 0f) {
+                    onAvoPositionChanged(avoX / screenWidthPx, avoY / screenHeightPx)
                 }
 
                 // Audio step
@@ -188,11 +196,14 @@ fun InteractiveAvoField(
         Canvas(modifier = Modifier.fillMaxSize()) {
             val canvasW = size.width
             val canvasH = size.height
+            screenWidthPx = canvasW
+            screenHeightPx = canvasH
 
             // Initialize Avo position to bottom-center of stage if not set
             if (avoX < 0f || avoY < 0f) {
                 avoX = canvasW * 0.5f
                 avoY = canvasH * 0.76f
+                onAvoPositionChanged(0.5f, 0.76f)
             }
 
             // 1. Draw Player Drawn Sparkling Path

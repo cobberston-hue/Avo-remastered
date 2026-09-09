@@ -21,6 +21,7 @@ fun AvoVideoPlayer(
     isLooping: Boolean = true,
     isMuted: Boolean = false,
     isPlaying: Boolean = true,
+    targetTimeMs: Int? = null,
     onVideoPrepared: (durationMs: Int) -> Unit = {},
     onVideoCompleted: () -> Unit = {}
 ) {
@@ -39,6 +40,20 @@ fun AvoVideoPlayer(
                 mediaPlayerRef?.release()
                 mediaPlayerRef = null
             } catch (_: Exception) {}
+        }
+    }
+
+    // Dynamic screen switching / camera cut seeking based on proximity to area
+    LaunchedEffect(targetTimeMs, videoViewRef) {
+        targetTimeMs?.let { timeMs ->
+            videoViewRef?.let { vv ->
+                try {
+                    vv.seekTo(timeMs)
+                    if (isPlaying && !vv.isPlaying) {
+                        vv.start()
+                    }
+                } catch (_: Exception) {}
+            }
         }
     }
 

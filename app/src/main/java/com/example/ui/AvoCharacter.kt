@@ -43,7 +43,7 @@ fun AvoCharacter(
         label = "AvoBreath"
     )
 
-    // Walking tilt waddle
+    // Walking tilt waddle & leg step cycle
     val walkWaddle by infiniteTransition.animateFloat(
         initialValue = -8f,
         targetValue = 8f,
@@ -52,6 +52,16 @@ fun AvoCharacter(
             repeatMode = RepeatMode.Reverse
         ),
         label = "AvoWaddle"
+    )
+
+    val walkStepCycle by infiniteTransition.animateFloat(
+        initialValue = 0f,
+        targetValue = 1f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(240, easing = LinearEasing),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = "AvoStepCycle"
     )
 
     // Periodic blinking (every 3-4 seconds)
@@ -79,6 +89,9 @@ fun AvoCharacter(
         costume == CostumeType.TIARA -> R.drawable.avo_costume_tiara
         costume == CostumeType.POLICE -> R.drawable.avo_costume_police
         costume == CostumeType.ROCKET -> R.drawable.avo_costume_rocket
+        isWalking && (effectiveAngle in 45f..135f) -> {
+            if (walkStepCycle > 0.5f) R.drawable.avo_walk_left else R.drawable.avo_walk_right
+        }
         else -> {
             when (effectiveAngle) {
                 in 337.5f..360f, in 0f..22.5f -> R.drawable.avo_rot_90 // facing right

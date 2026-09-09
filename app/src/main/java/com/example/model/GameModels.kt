@@ -19,6 +19,19 @@ data class MysteryClue(
     val emoji: String = "🔍"
 )
 
+data class CameraZone(
+    val id: String,
+    val name: String,
+    val startMs: Int,
+    val endMs: Int,
+    val boundsMinX: Float, // Normalized 0..1 coordinate bounds on screen
+    val boundsMaxX: Float,
+    val boundsMinY: Float,
+    val boundsMaxY: Float,
+    val focusCenterX: Float,
+    val focusCenterY: Float
+)
+
 data class Episode(
     val id: Int,
     val number: Int,
@@ -29,6 +42,7 @@ data class Episode(
     val durationSeconds: Int,
     val beans: List<JellyBean>,
     val mysteryClue: MysteryClue,
+    val cameraZones: List<CameraZone> = emptyList(),
     val isUnlocked: Boolean = false,
     val starsEarned: Int = 0,
     val maxStars: Int = 3
@@ -146,6 +160,13 @@ object EpisodeData {
                     y = 0.38f,
                     emoji = "🔍"
                 ),
+                cameraZones = listOf(
+                    CameraZone("z_wide", "Workbench Overview", 0, 5720, 0.0f, 1.0f, 0.65f, 1.0f, 0.5f, 0.8f),
+                    CameraZone("z_notes", "Computer & Notes", 5720, 18760, 0.0f, 0.45f, 0.2f, 0.65f, 0.25f, 0.45f),
+                    CameraZone("z_chem", "Chemistry Apparatus", 18760, 31720, 0.45f, 0.8f, 0.2f, 0.65f, 0.62f, 0.45f),
+                    CameraZone("z_teleport", "Teleporter Stage", 31720, 45720, 0.65f, 1.0f, 0.4f, 0.85f, 0.82f, 0.62f),
+                    CameraZone("z_close", "Macro Discovery", 45720, 60000, 0.3f, 0.7f, 0.4f, 0.8f, 0.5f, 0.6f)
+                ),
                 isUnlocked = true,
                 starsEarned = 0
             ),
@@ -171,6 +192,12 @@ object EpisodeData {
                     x = 0.25f,
                     y = 0.60f,
                     emoji = "📜"
+                ),
+                cameraZones = listOf(
+                    CameraZone("z_counter_wide", "Island Panorama", 0, 7840, 0.0f, 1.0f, 0.6f, 1.0f, 0.5f, 0.8f),
+                    CameraZone("z_toaster", "Toaster & Cutting Board", 7840, 20360, 0.0f, 0.5f, 0.2f, 0.65f, 0.28f, 0.45f),
+                    CameraZone("z_sink", "Marble Basin & Sink", 20360, 36240, 0.5f, 1.0f, 0.2f, 0.65f, 0.72f, 0.45f),
+                    CameraZone("z_close_fruit", "Fruit Basket Macro", 36240, 60000, 0.3f, 0.7f, 0.4f, 0.8f, 0.5f, 0.6f)
                 ),
                 isUnlocked = true,
                 starsEarned = 0
@@ -198,6 +225,12 @@ object EpisodeData {
                     y = 0.32f,
                     emoji = "🔋"
                 ),
+                cameraZones = listOf(
+                    CameraZone("z_living_wide", "Living Room Establishing", 0, 10200, 0.0f, 1.0f, 0.6f, 1.0f, 0.5f, 0.8f),
+                    CameraZone("z_device_table", "Electromagnetic Device", 10200, 26400, 0.3f, 0.7f, 0.2f, 0.6f, 0.5f, 0.38f),
+                    CameraZone("z_sofa_side", "Sofa Cushion Stash", 26400, 42800, 0.0f, 0.4f, 0.4f, 0.85f, 0.25f, 0.65f),
+                    CameraZone("z_circuit_board", "Overhead Circuit Map", 42800, 60000, 0.6f, 1.0f, 0.4f, 0.85f, 0.75f, 0.65f)
+                ),
                 isUnlocked = true,
                 starsEarned = 0
             ),
@@ -223,6 +256,12 @@ object EpisodeData {
                     x = 0.76f,
                     y = 0.70f,
                     emoji = "💳"
+                ),
+                cameraZones = listOf(
+                    CameraZone("z_crime_wide", "Shattered Doorway", 0, 8900, 0.0f, 1.0f, 0.6f, 1.0f, 0.5f, 0.8f),
+                    CameraZone("z_footprints", "Fluorescent Footprints", 8900, 24100, 0.1f, 0.5f, 0.3f, 0.75f, 0.3f, 0.55f),
+                    CameraZone("z_safe", "Cracked Vault Stash", 24100, 41500, 0.5f, 0.95f, 0.3f, 0.75f, 0.72f, 0.55f),
+                    CameraZone("z_clue_detail", "Badge Fingerprint Scan", 41500, 60000, 0.3f, 0.7f, 0.2f, 0.6f, 0.5f, 0.4f)
                 ),
                 isUnlocked = true,
                 starsEarned = 0
@@ -250,6 +289,12 @@ object EpisodeData {
                     y = 0.24f,
                     emoji = "💾"
                 ),
+                cameraZones = listOf(
+                    CameraZone("z_corridor_wide", "Hallway Pursuit Sprint", 0, 9500, 0.0f, 1.0f, 0.6f, 1.0f, 0.5f, 0.8f),
+                    CameraZone("z_doors_mid", "Apartment Doorways", 9500, 25200, 0.2f, 0.8f, 0.3f, 0.7f, 0.5f, 0.5f),
+                    CameraZone("z_elevator", "Elevator Landing Chase", 25200, 43600, 0.0f, 0.5f, 0.2f, 0.6f, 0.3f, 0.4f),
+                    CameraZone("z_exit_turn", "Emergency Stairs Turn", 43600, 60000, 0.5f, 1.0f, 0.2f, 0.6f, 0.75f, 0.4f)
+                ),
                 isUnlocked = true,
                 starsEarned = 0
             ),
@@ -275,6 +320,12 @@ object EpisodeData {
                     x = 0.80f,
                     y = 0.40f,
                     emoji = "🌸"
+                ),
+                cameraZones = listOf(
+                    CameraZone("z_green_wide", "Canopy Overview", 0, 8500, 0.0f, 1.0f, 0.6f, 1.0f, 0.5f, 0.8f),
+                    CameraZone("z_ferns", "Giant Fern Foliage", 8500, 23800, 0.0f, 0.5f, 0.2f, 0.65f, 0.25f, 0.45f),
+                    CameraZone("z_waterfall", "Mist Waterfall Pool", 23800, 41200, 0.5f, 1.0f, 0.2f, 0.65f, 0.75f, 0.45f),
+                    CameraZone("z_orchid_close", "Golden Orchid Macro", 41200, 60000, 0.3f, 0.7f, 0.3f, 0.7f, 0.5f, 0.5f)
                 ),
                 isUnlocked = true,
                 starsEarned = 0
@@ -302,6 +353,12 @@ object EpisodeData {
                     y = 0.28f,
                     emoji = "🔑"
                 ),
+                cameraZones = listOf(
+                    CameraZone("z_lair_wide", "Laser Grid Chamber", 0, 11400, 0.0f, 1.0f, 0.6f, 1.0f, 0.5f, 0.8f),
+                    CameraZone("z_servers", "Supercomputer Rack Bank", 11400, 27600, 0.0f, 0.5f, 0.2f, 0.65f, 0.25f, 0.45f),
+                    CameraZone("z_lasers", "Red Security Beam Hub", 27600, 44200, 0.5f, 1.0f, 0.2f, 0.65f, 0.75f, 0.45f),
+                    CameraZone("z_terminal", "Mainframe Key Terminal", 44200, 60000, 0.3f, 0.7f, 0.2f, 0.6f, 0.5f, 0.4f)
+                ),
                 isUnlocked = true,
                 starsEarned = 0
             ),
@@ -328,6 +385,12 @@ object EpisodeData {
                     y = 0.22f,
                     emoji = "🏆"
                 ),
+                cameraZones = listOf(
+                    CameraZone("z_finale_wide", "Rooftop Dome Vista", 0, 9200, 0.0f, 1.0f, 0.6f, 1.0f, 0.5f, 0.8f),
+                    CameraZone("z_telescope", "Giant Refractor Telescope", 9200, 26000, 0.0f, 0.5f, 0.2f, 0.65f, 0.25f, 0.45f),
+                    CameraZone("z_antenna", "Skyline Microwave Transmitter", 26000, 43500, 0.5f, 1.0f, 0.2f, 0.65f, 0.75f, 0.45f),
+                    CameraZone("z_medal_win", "Celebratory Podium Stage", 43500, 60000, 0.3f, 0.7f, 0.2f, 0.6f, 0.5f, 0.4f)
+                ),
                 isUnlocked = true,
                 starsEarned = 0
             ),
@@ -353,6 +416,12 @@ object EpisodeData {
                     x = 0.50f,
                     y = 0.30f,
                     emoji = "📐"
+                ),
+                cameraZones = listOf(
+                    CameraZone("z_prologue_wide", "Childhood Wooden Desk", 0, 8800, 0.0f, 1.0f, 0.6f, 1.0f, 0.5f, 0.8f),
+                    CameraZone("z_sketchbook", "Notebook & Crayon Drawings", 8800, 24500, 0.0f, 0.5f, 0.2f, 0.65f, 0.25f, 0.45f),
+                    CameraZone("z_clockwork", "Miniature Gear Mechanism", 24500, 42000, 0.5f, 1.0f, 0.2f, 0.65f, 0.75f, 0.45f),
+                    CameraZone("z_spark_birth", "First Organic Life Spark", 42000, 60000, 0.3f, 0.7f, 0.3f, 0.7f, 0.5f, 0.5f)
                 ),
                 isUnlocked = true,
                 starsEarned = 0

@@ -59,6 +59,13 @@ fun GameplayScreen(
     var isVideoPlaying by remember { mutableStateOf(true) }
     var showCompletionDialog by remember { mutableStateOf(false) }
 
+    // Dynamic screen / camera zone tracking
+    var currentCameraZone by remember(episode) {
+        mutableStateOf(episode.cameraZones.firstOrNull())
+    }
+    var videoTargetTimeMs by remember { mutableStateOf<Int?>(null) }
+    var activeZoneName by remember { mutableStateOf("") }
+
     // Count collected beans
     val collectedBeansCount = beans.count { it.isCollected }
     val totalBeansCount = beans.size
@@ -73,13 +80,14 @@ fun GameplayScreen(
     }
 
     Box(modifier = modifier.fillMaxSize().background(Color.Black)) {
-        // 1. Live-Action Untouched 25 FPS Video Plate
+        // 1. Live-Action Untouched 25 FPS Video Plate with Dynamic Camera Cut Switching
         AvoVideoPlayer(
             videoResId = episode.videoResId,
             modifier = Modifier.fillMaxSize(),
             isLooping = true,
             isMuted = isMuted,
-            isPlaying = isVideoPlaying
+            isPlaying = isVideoPlaying,
+            targetTimeMs = videoTargetTimeMs
         )
 
         // 2. Interactive Touch Path & Avo Physics Layer
@@ -96,6 +104,21 @@ fun GameplayScreen(
             },
             onClueFound = {
                 mysteryClue = mysteryClue.copy(isFound = true)
+            },
+            onAvoPositionChanged = { normX, normY ->
+                // Check closest camera zone in current episode
+                if (episode.cameraZones.isNotEmpty()) {
+                    val bestZone = episode.cameraZones.minByOrNull { zone ->
+                        val dx = normX - zone.focusCenterX
+                        val dy = normY - zone.focusCenterY
+                        dx * dx + dy * dy
+                    }
+                    if (bestZone != null && bestZone.id != currentCameraZone?.id) {
+                        currentCameraZone = bestZone
+                        videoTargetTimeMs = bestZone.startMs
+                        activeZoneName = bestZone.name
+                    }
+                }
             },
             modifier = Modifier.fillMaxSize()
         )
@@ -128,7 +151,7 @@ fun GameplayScreen(
                 }
             }
 
-            // Episode Title Badge
+            // Episode Title & Dynamic Camera Zone Badge
             Surface(
                 color = Color(0x88122016),
                 shape = RoundedCornerShape(20.dp),
@@ -139,7 +162,7 @@ fun GameplayScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "EP. ${episode.number}: ${episode.location}",
+                        text = if (activeZoneName.isNotEmpty()) "🎥 $activeZoneName" else "EP. ${episode.number}: ${episode.location}",
                         color = Color.White,
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Bold
