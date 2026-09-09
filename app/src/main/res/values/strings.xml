@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Avo Remaster</string>
+    <string name="game_subtitle">Playdeo Archive &amp; Interactive Remaster</string>
+    <string name="ep1_title">Episode 1: Awakening</string>
+    <string name="ep1_desc">Billie brings Avo to life in the workshop laboratory.</string>
+    <string name="ep2_title">Episode 2: Kitchen Lab</string>
+    <string name="ep2_desc">Exploring the breakfast counter and lab apparatus.</string>
+    <string name="ep3_title">Episode 3: The Secret Device</string>
+    <string name="ep3_desc">Testing the experimental prototype in the living room.</string>
+    <string name="ep4_title">Episode 4: The Break-In</string>
+    <string name="ep4_desc">Investigating mysterious clues left by the intruder.</string>
+    <string name="ep5_title">Episode 5: The Corridor Chase</string>
+    <string name="ep5_desc">Following the trail through the apartment hallway.</string>
+    <string name="ep6_title">Episode 6: The Greenhouse</string>
+    <string name="ep6_desc">Navigating the botanical maze of rare plants.</string>
+    <string name="ep7_title">Episode 7: Mastermind\'s Trap</string>
+    <string name="ep7_desc">Disarming the high-tech gauntlet of machinery.</string>
+    <string name="ep8_title">Episode 8: Grand Finale</string>
+    <string name="ep8_desc">Saving the day and celebrating with Billie!</string>
+</resources>

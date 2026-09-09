@@ -1,0 +1,6 @@
+{
+  "name": "Avo Remaster",
+  "description": "Faithful Android remaster preserving Playdeo\'s groundbreaking interactive TV game Avo, featuring original cutscenes, authentic soundscapes, and touch-path mechanics.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
